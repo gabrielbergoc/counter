@@ -3,13 +3,13 @@
 import "./button.scss";
 
 export default function Button({
-  text,
+  children,
   onclick,
   className,
 }: {
-  text: string;
+  children: React.ReactNode;
   onclick: () => void;
   className?: string;
 }) {
-  return <button className={className} onClick={onclick}>{text}</button>;
+  return <button className={className} onClick={onclick}>{children}</button>;
 }

@@ -4,15 +4,15 @@ import "./display.scss";
 import clsx from "clsx";
 
 export default function Display({
-  content,
+  children,
   className,
 }: {
-  content: string | number;
+  children: React.ReactNode;
   className?: string;
 }) {
   return (
     <div className="display-container">
-      <span className={clsx(className, "display-span")}>{content}</span>
+      <span className={clsx(className, "display-span")}>{children}</span>
     </div>
   );
 }

@@ -25,12 +25,12 @@ export default function Home() {
       <Header>Counter</Header>
       <div className="grid">
         <div className="row">
-          <Button className="counter-buttons" text="-" onclick={decrement} />
-          <Display className="counter" content={counter} />
-          <Button className="counter-buttons" text="+" onclick={increment} />
+          <Button className="counter-buttons" onclick={decrement}>-</Button>
+          <Display className="counter">{counter}</Display>
+          <Button className="counter-buttons" onclick={increment}>+</Button>
         </div>
         <div className="row">
-          <Button text="Reset" onclick={resetCounter} />
+          <Button onclick={resetCounter}>Reset</Button>
         </div>
       </div>
     </main>
