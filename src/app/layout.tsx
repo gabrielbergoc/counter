@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { inter } from "./ui/fonts";
-import "./ui/globals.css";
+import "./ui/globals.scss";
 
 export const metadata: Metadata = {
   title: "Counter",

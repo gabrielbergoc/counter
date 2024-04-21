@@ -1,5 +1,12 @@
 .display-container {
+  display: grid;
   color: #ffffff;
   margin: 1rem;
   padding: 1rem;
+  min-width: 50px;
+  
+  .display-span {
+    justify-self: center;
+    text-align: center;
+  }
 }

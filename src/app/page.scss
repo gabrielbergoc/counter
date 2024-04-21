@@ -1,10 +1,11 @@
 .main {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  font-family: monospace;
 }
 
 .description {
@@ -108,6 +109,29 @@
 .logo {
   position: relative;
 }
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.counter-buttons {
+  height: 40px;
+}
+
+.counter {
+  font-size: x-large;
+  min-width: 60px;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
