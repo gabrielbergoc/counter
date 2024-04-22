@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 import Button from "./components/button/button";
 import Display from "./components/display/display";
 import Header from "./components/header/header";
+import { isAuthenticated } from "./lib/auth";
 import "./page.scss";
 
 export default function Home() {
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      redirect("/login");
+    }
+  }, []);
+
   const [counter, setCounter] = useState(0);
 
   function addToCounter(n: number) {
