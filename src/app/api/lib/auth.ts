@@ -19,7 +19,7 @@ export async function login({ email, password }: { email: string, password: stri
   if (!correct) {
     throw new InvalidPassword("Wrong password");
   }
-
+  
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error("Couldn't retrieve JWT_SECRET");
@@ -38,6 +38,24 @@ export async function login({ email, password }: { email: string, password: stri
       });
 
       resolve(token);
+    });
+  });
+}
+
+export async function authorize(token: string) {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("Couldn't retrieve JWT_SECRET");
+  }
+
+  return new Promise<jwt.JwtPayload | string | undefined>((resolve, reject) => {
+    jwt.verify(token, secret, {}, function (err, result) {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      resolve(result);
     });
   });
 }
