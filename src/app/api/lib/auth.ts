@@ -33,11 +33,6 @@ export async function login({ email, password }: { email: string, password: stri
         return;
       }
 
-      await prisma.user.update({
-        where: { email },
-        data: { token },
-      });
-
       resolve(token);
     });
   });

@@ -20,5 +20,4 @@ model User {
   name      String?
   password  String
   counter   Int     @default(0)
-  token     String?
 }
