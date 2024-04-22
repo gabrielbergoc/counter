@@ -9,6 +9,8 @@ import Navbar from "./components/navbar/navbar";
 import { isAuthenticated, removeToken } from "./lib/auth";
 import { getUserCounter, setUserCounter } from "./lib/counter";
 import "./page.scss";
+import Loader from "./components/loader/loader";
+import FadeIn from "./components/fadeIn/fadeIn";
 
 export default function Home() {
   const router = useRouter();
@@ -47,27 +49,31 @@ export default function Home() {
 
   return (
     <>
-      {show && (
-        <main className="main">
-          <Navbar>
-            <Button onclick={doLogout}>Logout</Button>
-          </Navbar>
-          <Header>Counter</Header>
-          <div className="grid">
-            <div className="row">
-              <Button className="counter-buttons" onclick={decrement}>
-                -
-              </Button>
-              <Display className="counter">{counter}</Display>
-              <Button className="counter-buttons" onclick={increment}>
-                +
-              </Button>
+      {!show ? (
+        <Loader />
+      ) : (
+        <FadeIn>
+          <main className="main">
+            <Navbar>
+              <Button onclick={doLogout}>Logout</Button>
+            </Navbar>
+            <Header>Counter</Header>
+            <div className="grid">
+              <div className="row">
+                <Button className="counter-buttons" onclick={decrement}>
+                  -
+                </Button>
+                <Display className="counter">{counter}</Display>
+                <Button className="counter-buttons" onclick={increment}>
+                  +
+                </Button>
+              </div>
+              <div className="row">
+                <Button onclick={resetCounter}>Reset</Button>
+              </div>
             </div>
-            <div className="row">
-              <Button onclick={resetCounter}>Reset</Button>
-            </div>
-          </div>
-        </main>
+          </main>
+        </FadeIn>
       )}
     </>
   );
