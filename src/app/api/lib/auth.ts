@@ -43,6 +43,26 @@ export async function login({ email, password }: { email: string, password: stri
   });
 }
 
+async function createUser({ email, password }: { email: string; password: string }) {
+  return new Promise<void>((resolve, reject) => {
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      await prisma.user.create({
+        data: {
+          email,
+          password: hash,
+        },
+      });
+
+      resolve();
+    });
+  });
+}
+
 export async function authorize(token: string) {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
