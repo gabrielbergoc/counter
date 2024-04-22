@@ -1,24 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { authorize } from "../lib/auth";
+import { authorize, getTokenFromHeaders, hasAuthorizationHeaders } from "../lib/auth";
 
 const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-  if (!req.headers.has("Authorization")) {
+  if (!hasAuthorizationHeaders(req)) {
     return NextResponse.redirect("/login");
   }
 
-  const token = req.headers.get("Authorization")?.replace("Bearer ", "");
+  const token = getTokenFromHeaders(req);
   if (!token) {
     return NextResponse.redirect("/login");
   }
 
   try {
     const payload = await authorize(token);
-    if (!payload || typeof payload === "string") {
-      throw new Error("Error verifying token");
-    }
 
     const { email } = payload;
     const { counter } = await prisma.user.findFirstOrThrow({

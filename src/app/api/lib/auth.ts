@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -48,9 +49,9 @@ export async function authorize(token: string) {
     throw new Error("Couldn't retrieve JWT_SECRET");
   }
 
-  return new Promise<jwt.JwtPayload | string | undefined>((resolve, reject) => {
+  return new Promise<jwt.JwtPayload>((resolve, reject) => {
     jwt.verify(token, secret, {}, function (err, result) {
-      if (err) {
+      if (err || !result || typeof result === "string") {
         reject(err);
         return;
       }
@@ -58,4 +59,12 @@ export async function authorize(token: string) {
       resolve(result);
     });
   });
+}
+
+export function getTokenFromHeaders(req: NextRequest) {
+  return req.headers.get("Authorization")?.replace("Bearer ", "");
+}
+
+export function hasAuthorizationHeaders(req: NextRequest) {
+  return req.headers.has("Authorization");
 }
