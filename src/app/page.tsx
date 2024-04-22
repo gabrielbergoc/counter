@@ -6,7 +6,7 @@ import Button from "./components/button/button";
 import Display from "./components/display/display";
 import Header from "./components/header/header";
 import Navbar from "./components/navbar/navbar";
-import { isAuthenticated, removeToken } from "./lib/auth";
+import { getUserEmail, isAuthenticated, removeToken } from "./lib/auth";
 import { getUserCounter, setUserCounter } from "./lib/counter";
 import "./page.scss";
 import Loader from "./components/loader/loader";
@@ -16,6 +16,7 @@ export default function Home() {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [counter, setCounter] = useState(0);
+  const [userEmail, setUserEmail] = useState("");
 
   const setShowTrue = () => setShow(true);
 
@@ -27,6 +28,9 @@ export default function Home() {
     getUserCounter()
       .then(setCounter)
       .then(setShowTrue);
+
+    getUserEmail()
+      .then(setUserEmail);
   }, []);
   useEffect(() => {
     setUserCounter(counter);
@@ -55,6 +59,7 @@ export default function Home() {
         <FadeIn>
           <main className="main">
             <Navbar>
+              <div>{userEmail}</div>
               <Button onclick={doLogout}>Logout</Button>
             </Navbar>
             <Header>Counter</Header>
