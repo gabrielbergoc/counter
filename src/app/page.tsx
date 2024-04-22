@@ -6,19 +6,22 @@ import Button from "./components/button/button";
 import Display from "./components/display/display";
 import Header from "./components/header/header";
 import { isAuthenticated } from "./lib/auth";
-import { getCounter } from "./lib/counter";
+import { getUserCounter, setUserCounter } from "./lib/counter";
 import "./page.scss";
 
 export default function Home() {
+  const [counter, setCounter] = useState(0);
+
   useEffect(() => {
     if (!isAuthenticated()) {
       redirect("/login");
     }
     
-    getCounter().then(setCounter);
+    getUserCounter().then(setCounter);
   }, []);
-
-  const [counter, setCounter] = useState(0);
+  useEffect(() => {
+    setUserCounter(counter)
+  }, [counter]);
 
   function addToCounter(n: number) {
     return () => setCounter(counter + n);
