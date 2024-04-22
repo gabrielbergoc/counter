@@ -6,6 +6,7 @@ import Button from "./components/button/button";
 import Display from "./components/display/display";
 import Header from "./components/header/header";
 import { isAuthenticated } from "./lib/auth";
+import { getCounter } from "./lib/counter";
 import "./page.scss";
 
 export default function Home() {
@@ -13,6 +14,8 @@ export default function Home() {
     if (!isAuthenticated()) {
       redirect("/login");
     }
+    
+    getCounter().then(setCounter);
   }, []);
 
   const [counter, setCounter] = useState(0);
