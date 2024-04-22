@@ -4,7 +4,7 @@ import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Button from "../components/button/button";
 import Input from "../components/input/input";
-import { isAuthenticated } from "../lib/auth";
+import { isAuthenticated, setToken } from "../lib/auth";
 
 export default function Page() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function Page() {
 
     if (res.ok) {
       const { token } = await res.json();
-      localStorage.setItem("token", token);
+      setToken(token);
       router.push("/");
     }
   }
