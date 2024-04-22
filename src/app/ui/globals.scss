@@ -226,6 +226,12 @@ a {
   position: relative;
 }
 
+.navbar {
+  padding: 10px;
+  position: absolute;
+  top: 0;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {

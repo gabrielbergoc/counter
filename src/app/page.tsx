@@ -10,6 +10,7 @@ import { getUserCounter, setUserCounter } from "./lib/counter";
 import "./page.scss";
 
 export default function Home() {
+  const router = useRouter();
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
@@ -29,6 +30,10 @@ export default function Home() {
 
   function resetCounter() {
     setCounter(0);
+  }
+  function doLogout() {
+    removeToken();
+    router.push("/login");
   }
 
   const decrement = addToCounter(-1);
