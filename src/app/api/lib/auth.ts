@@ -8,19 +8,19 @@ const prisma = new PrismaClient();
 export class InvalidPassword extends Error { }
 
 export async function login({ email, password }: { email: string, password: string }) {
-  const user = await prisma.user.findFirstOrThrow({
-    where: {
-      email: {
-        equals: email,
-      },
-    },
+  let user = await prisma.user.findUnique({
+    where: { email },
   });
 
-  const correct = await bcrypt.compare(password, user.password);
-  if (!correct) {
-    throw new InvalidPassword("Wrong password");
+  if (!user) {
+    await createUser({ email, password });
+  } else {
+    const correct = await bcrypt.compare(password, user.password);
+    if (!correct) {
+      throw new InvalidPassword("Wrong password");
+    }
   }
-  
+
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error("Couldn't retrieve JWT_SECRET");
