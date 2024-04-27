@@ -10,6 +10,9 @@
   --background-end-rgb: 255, 255, 255;
   --loader-1st-color: 200, 200, 200;
   --loader-2nd-color: 100, 100, 100;
+  --dialog-overlay-rgba: 0, 0, 0, 0.2;
+  --dialog-background-rgb: 255, 255, 255;
+  --dialog-color-rgb: 0, 0, 0;
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -47,6 +50,9 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+    --dialog-overlay-rgba: 255, 255, 255, 0.5;
+    --dialog-background-rgb: 200, 200, 200;
+    --dialog-color-rgb: 0, 0, 0;
 
     --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
     --secondary-glow: linear-gradient(
