@@ -29,7 +29,7 @@ export async function getUserEmail() {
       reject(new Error("Couldn't decode token"));
       return;
     }
-    console.log(payload.email)
+
     resolve(payload.email);
   });
 }

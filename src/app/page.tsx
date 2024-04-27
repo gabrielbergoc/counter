@@ -32,6 +32,7 @@ export default function Home() {
     getUserEmail()
       .then(setUserEmail);
   }, []);
+
   useEffect(() => {
     setUserCounter(counter);
   }, [counter]);
@@ -43,6 +44,7 @@ export default function Home() {
   function resetCounter() {
     setCounter(0);
   }
+
   function doLogout() {
     removeToken();
     router.push("/login");
@@ -62,7 +64,9 @@ export default function Home() {
               <div>{userEmail}</div>
               <Button onclick={doLogout}>Logout</Button>
             </Navbar>
+
             <Header>Counter</Header>
+
             <div className="grid">
               <div className="row">
                 <Button className="counter-buttons" onclick={decrement}>
