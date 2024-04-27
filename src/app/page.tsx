@@ -11,12 +11,14 @@ import { getUserCounter, setUserCounter } from "./lib/counter";
 import "./page.scss";
 import Loader from "./components/loader/loader";
 import FadeIn from "./components/fadeIn/fadeIn";
+import Dialog from "./components/dialog/dialog";
 
 export default function Home() {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [counter, setCounter] = useState(0);
   const [userEmail, setUserEmail] = useState("");
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const setShowTrue = () => setShow(true);
 
@@ -50,6 +52,23 @@ export default function Home() {
     router.push("/login");
   }
 
+  function openConfirmDialog() {
+    setShowConfirmDialog(true);
+  }
+
+  function closeConfirmDialog(value?: boolean) {
+    return () => {
+      setShowConfirmDialog(false);
+
+      if (value) {
+        resetCounter();
+      }
+    };
+  }
+
+  const confirmDialog = closeConfirmDialog(true);
+  const cancelDialog = closeConfirmDialog(false);
+
   const decrement = addToCounter(-1);
   const increment = addToCounter(+1);
 
@@ -78,9 +97,14 @@ export default function Home() {
                 </Button>
               </div>
               <div className="row">
-                <Button onclick={resetCounter}>Reset</Button>
+                <Button onclick={openConfirmDialog}>Reset</Button>
               </div>
             </div>
+
+            <Dialog show={showConfirmDialog} onConfirm={confirmDialog} onCancel={cancelDialog}>
+              <h2>Are you sure you want to reset the counter?</h2>
+              <p>This action is irreversible</p>
+            </Dialog>
           </main>
         </FadeIn>
       )}
