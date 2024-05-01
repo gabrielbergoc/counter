@@ -1,5 +1,3 @@
-"use client";
-
 import "./display.scss";
 import clsx from "clsx";
 

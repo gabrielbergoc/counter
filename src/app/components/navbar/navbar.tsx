@@ -1,5 +1,3 @@
-"use client";
-
 import "./navbar.scss";
 
 export default function Navbar({ children }: { children: React.ReactNode }) {
