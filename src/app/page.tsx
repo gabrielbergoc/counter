@@ -3,8 +3,8 @@ import Counter from "./components/counter/counter";
 import FadeIn from "./components/fadeIn/fadeIn";
 import Logout from "./components/logout/logout";
 import Navbar from "./components/navbar/navbar";
-import { getUserEmail } from "./lib/auth.server";
-import { getUserCounter } from "./lib/counter";
+import { getUserEmail } from "./lib/server/auth";
+import { getUserCounter } from "./lib/server/counter";
 import { authGuard } from "./lib/guards";
 import "./page.scss";
 

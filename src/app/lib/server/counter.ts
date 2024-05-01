@@ -1,9 +1,10 @@
 "use server";
 
 import { debounce } from "lodash";
-import { authorize, getToken } from "./auth";
+import { getToken } from "../auth";
 import { PrismaClient } from "@prisma/client";
 import { cookies } from "next/headers";
+import { authorize } from "./auth";
 
 
 const prisma = new PrismaClient();

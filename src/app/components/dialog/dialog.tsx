@@ -1,6 +1,6 @@
 "use client";
 
-import { useKeyEffect } from "@/app/lib/effects";
+import { useKeyEffect } from "@/app/lib/effects/useKeyEffect";
 import Button from "../button/button";
 import "./dialog.scss";
 

@@ -5,7 +5,7 @@ import Button from "../button/button";
 import Display from "../display/display";
 import Header from "../header/header";
 import "./counter.scss";
-import { setUserCounter } from "@/app/lib/counter";
+import { setUserCounter } from "@/app/lib/server/counter";
 import Dialog from "../dialog/dialog";
 
 export default function Counter({ initialValue }: { initialValue?: number }) {

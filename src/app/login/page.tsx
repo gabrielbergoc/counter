@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Button from "../components/button/button";
 import Input from "../components/input/input";
 import { setToken } from "../lib/auth";
-import { login } from "../lib/auth.server";
+import { login } from "../lib/server/auth";
 import { loggedInGuard } from "../lib/guards";
 
 export default function Login() {

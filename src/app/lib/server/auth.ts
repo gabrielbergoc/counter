@@ -1,18 +1,13 @@
 "use server";
 
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getToken, removeToken } from "./auth";
-import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+import { getToken } from "../auth";
+
 
 const prisma = new PrismaClient();
-
-export async function doLogout() {
-  removeToken({ cookies });
-  redirect("/login");
-}
 
 export async function getUserEmail() {
   const token = getToken({ cookies });
@@ -79,6 +74,24 @@ async function createUser({ email, password }: { email: string; password: string
       });
 
       resolve();
+    });
+  });
+}
+
+export async function authorize(token: string) {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("Couldn't retrieve JWT_SECRET");
+  }
+
+  return new Promise<jwt.JwtPayload>((resolve, reject) => {
+    jwt.verify(token, secret, {}, function (err, result) {
+      if (err || !result || typeof result === "string") {
+        reject(err);
+        return;
+      }
+
+      resolve(result);
     });
   });
 }
