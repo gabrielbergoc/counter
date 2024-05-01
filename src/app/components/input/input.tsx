@@ -7,6 +7,7 @@ export default function Input({
   className,
   label,
   id,
+  name,
   value,
   onchange,
 }: {
@@ -14,6 +15,7 @@ export default function Input({
   className?: string;
   label?: string;
   id?: string;
+  name?: string;
   value?: string;
   onchange?: (value: string) => void;
 }) {
@@ -22,6 +24,7 @@ export default function Input({
       {label && <label htmlFor={id}>{label}</label>}
       <input
         id={id}
+        name={name}
         type={type ?? "text"}
         className={className}
         value={value}

@@ -1,35 +1,36 @@
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import jwt from "jsonwebtoken";
 
-export function isAuthenticated() {
-  return !!getToken();
+export function isAuthenticated(args?: any) {
+  return !!getToken(args);
 }
 
-export function getToken() {
-  return localStorage.getItem("token");
+export function getToken(args?: any) {
+  return getCookie("accessToken", args)?.toString();
 }
 
-export function setToken(token: string) {
-  localStorage.setItem("token", token);
+export function setToken(token: string, args?: any) {
+  setCookie("accessToken", token, args);
 }
 
-export function removeToken() {
-  localStorage.removeItem("token");
+export function removeToken(args?: any) {
+  deleteCookie("accessToken", args);
 }
 
-export async function getUserEmail() {
-  const token = getToken();
-  if (!token) {
-    throw new Error("Not authenticated");
+export async function authorize(token: string) {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("Couldn't retrieve JWT_SECRET");
   }
 
-  return new Promise<string>((resolve, reject) => {
-    const payload = jwt.decode(token, { json: true });
+  return new Promise<jwt.JwtPayload>((resolve, reject) => {
+    jwt.verify(token, secret, {}, function (err, result) {
+      if (err || !result || typeof result === "string") {
+        reject(err);
+        return;
+      }
 
-    if (!payload || !payload.email) {
-      reject(new Error("Couldn't decode token"));
-      return;
-    }
-
-    resolve(payload.email);
+      resolve(result);
+    });
   });
 }

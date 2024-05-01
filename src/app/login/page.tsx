@@ -1,51 +1,44 @@
-"use client";
-
-import { redirect, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import Button from "../components/button/button";
 import Input from "../components/input/input";
-import { isAuthenticated, setToken } from "../lib/auth";
+import { setToken } from "../lib/auth";
+import { login } from "../lib/auth.server";
+import { loggedInGuard } from "../lib/guards";
 
-export default function Page() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login() {
+  loggedInGuard({ cookies });
 
-  useEffect(() => {
-    if (isAuthenticated()) {
-      redirect("/")
+  async function onSubmit(formData: FormData) {
+    "use server";
+
+    const email = formData.get("login-email")?.toString();
+    const password = formData.get("login-password")?.toString();
+
+    if (!email) {
+      throw new Error("Email required");
     }
-  }, []);
 
-  async function doLogin() {
-    const res = await fetch("/api/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (res.ok) {
-      const { token } = await res.json();
-      setToken(token);
-      router.push("/");
+    if (!password) {
+      throw new Error("Password required");
     }
+
+    const token = await login({ email, password });
+    setToken(token, { cookies });
+
+    redirect("/");
   }
 
   return (
-    <main className="main">
-      <Input
-        id="login-email"
-        label="E-mail"
-        value={email}
-        onchange={setEmail}
-      />
+    <form action={onSubmit} className="main">
+      <Input id="login-email" name="login-email" label="E-mail" />
       <Input
         id="login-password"
+        name="login-password"
         type="password"
         label="Password"
-        value={password}
-        onchange={setPassword}
       />
-      <Button onclick={doLogin}>Login</Button>
-    </main>
+      <Button type="submit">Login</Button>
+    </form>
   );
 }

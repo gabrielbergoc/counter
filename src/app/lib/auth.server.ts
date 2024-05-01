@@ -1,11 +1,36 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+"use server";
+
 import jwt from "jsonwebtoken";
-import { NextRequest } from "next/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { getToken, removeToken } from "./auth";
+import bcrypt from "bcrypt";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export class InvalidPassword extends Error { }
+export async function doLogout() {
+  removeToken({ cookies });
+  redirect("/login");
+}
+
+export async function getUserEmail() {
+  const token = getToken({ cookies });
+  if (!token) {
+    throw new Error("Not authenticated");
+  }
+
+  return new Promise<string>((resolve, reject) => {
+    const payload = jwt.decode(token, { json: true });
+
+    if (!payload || !payload.email) {
+      reject(new Error("Couldn't decode token"));
+      return;
+    }
+
+    resolve(payload.email);
+  });
+}
 
 export async function login({ email, password }: { email: string, password: string }) {
   let user = await prisma.user.findUnique({
@@ -58,28 +83,4 @@ async function createUser({ email, password }: { email: string; password: string
   });
 }
 
-export async function authorize(token: string) {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error("Couldn't retrieve JWT_SECRET");
-  }
-
-  return new Promise<jwt.JwtPayload>((resolve, reject) => {
-    jwt.verify(token, secret, {}, function (err, result) {
-      if (err || !result || typeof result === "string") {
-        reject(err);
-        return;
-      }
-
-      resolve(result);
-    });
-  });
-}
-
-export function getTokenFromHeaders(req: NextRequest) {
-  return req.headers.get("Authorization")?.replace("Bearer ", "");
-}
-
-export function hasAuthorizationHeaders(req: NextRequest) {
-  return req.headers.has("Authorization");
-}
+class InvalidPassword extends Error { }
