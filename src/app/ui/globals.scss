@@ -103,11 +103,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -361,3 +356,13 @@ a {
   }
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 15px;
+
+  button {
+    margin-top: 15px;
+  }
+}
