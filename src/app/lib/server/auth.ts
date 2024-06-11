@@ -28,17 +28,17 @@ export async function getUserEmail() {
 }
 
 export async function login({ email, password }: { email: string, password: string }) {
-  let user = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { email },
   });
 
   if (!user) {
-    await createUser({ email, password });
-  } else {
-    const correct = await bcrypt.compare(password, user.password);
-    if (!correct) {
-      throw new InvalidPassword("Wrong password");
-    }
+    throw new NonexistentUserError();
+  }
+
+  const correct = await bcrypt.compare(password, user.password);
+  if (!correct) {
+    throw new InvalidPasswordError();
   }
 
   const secret = process.env.JWT_SECRET;
@@ -58,8 +58,20 @@ export async function login({ email, password }: { email: string, password: stri
   });
 }
 
-async function createUser({ email, password }: { email: string; password: string }) {
-  return new Promise<void>((resolve, reject) => {
+export async function createUser({
+  name, email, password,
+}: {
+  name: string; email: string; password: string;
+}) {
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (user) {
+    throw new ExistentUserError();
+  }
+
+  return new Promise<string>((resolve, reject) => {
     bcrypt.hash(password, 10, async (err, hash) => {
       if (err) {
         reject(err);
@@ -68,12 +80,25 @@ async function createUser({ email, password }: { email: string; password: string
 
       await prisma.user.create({
         data: {
+          name,
           email,
           password: hash,
         },
       });
 
-      resolve();
+      const secret = process.env.JWT_SECRET;
+      if (!secret) {
+        throw new Error("Couldn't retrieve JWT_SECRET");
+      }
+
+      jwt.sign({ email }, secret, {}, async function (err, token) {
+        if (err || !token) {
+          reject(err);
+          return;
+        }
+  
+        resolve(token);
+      });
     });
   });
 }
@@ -96,4 +121,20 @@ export async function authorize(token: string) {
   });
 }
 
-class InvalidPassword extends Error { }
+class InvalidPasswordError extends Error {
+  constructor() {
+    super("Wrong password");
+  }
+}
+
+class NonexistentUserError extends Error {
+  constructor() {
+    super("Nonexistent user");
+  }
+}
+
+class ExistentUserError extends Error {
+  constructor() {
+    super("User already exists");
+  }
+}
