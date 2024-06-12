@@ -13,6 +13,7 @@
   --dialog-overlay-rgba: 0, 0, 0, 0.2;
   --dialog-background-rgb: 255, 255, 255;
   --dialog-color-rgb: 0, 0, 0;
+  --input-background-color-rgb: 255, 255, 255;
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -53,6 +54,7 @@
     --dialog-overlay-rgba: 255, 255, 255, 0.5;
     --dialog-background-rgb: 200, 200, 200;
     --dialog-color-rgb: 0, 0, 0;
+    --input-background-color-rgb: 40, 40, 40;
 
     --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
     --secondary-glow: linear-gradient(
