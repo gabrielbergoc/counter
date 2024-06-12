@@ -1,5 +1,12 @@
 button {
-  padding: 0.5rem;
+  padding: 10px;
   min-width: 15px;
-  min-height: 15px;
+  min-height: 27px;
+  background-color: rgb(var(--button-primary-background-rgb));
+  color: rgb(var(--button-primary-color-rgb));
+  border: 2px solid gray;
+
+  &:focus {
+    outline-offset: 1px;
+  }
 }
