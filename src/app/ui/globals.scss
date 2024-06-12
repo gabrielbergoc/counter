@@ -6,7 +6,7 @@
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 200, 210, 230;
   --background-end-rgb: 255, 255, 255;
   --loader-1st-color: 200, 200, 200;
   --loader-2nd-color: 100, 100, 100;
@@ -51,7 +51,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
+    --background-start-rgb: 10, 20, 40;
     --background-end-rgb: 0, 0, 0;
     --dialog-overlay-rgba: 255, 255, 255, 0.5;
     --dialog-background-rgb: 200, 200, 200;
