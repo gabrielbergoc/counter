@@ -22,13 +22,14 @@ export default function Input({
   return (
     <div className="input-container">
       {label && <label htmlFor={id}>{label}</label>}
+
       <input
         id={id}
         name={name}
         type={type ?? "text"}
         className={className}
         value={value}
-        onChange={(evt) => onchange ? onchange(evt.target.value) : null}
+        onChange={(evt) => (onchange ? onchange(evt.target.value) : null)}
       />
     </div>
   );
