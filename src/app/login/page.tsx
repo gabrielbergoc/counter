@@ -1,20 +1,28 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Button from "../components/button/button";
 import Header from "../components/header/header";
 import Input from "../components/input/input";
+import Loader from "../components/loader/loader";
 import { setToken } from "../lib/auth";
 import { loggedInGuard } from "../lib/guards";
 import { login } from "../lib/server/auth";
 import "./login.scss";
-import Link from "next/link";
 
 export default function Login() {
-  loggedInGuard({ cookies });
+  loggedInGuard();
 
-  async function onSubmit(formData: FormData) {
-    "use server";
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // Previne o comportamento padrão do formulário
+    setLoading(true);
+
+    const formData = new FormData(event.currentTarget);
     const email = formData.get("login-email")?.toString();
     const password = formData.get("login-password")?.toString();
 
@@ -26,30 +34,38 @@ export default function Login() {
       throw new Error("Password required");
     }
 
-    const token = await login({ email, password });
-    setToken(token, { cookies });
-
-    redirect("/");
+    try {
+      const token = await login({ email, password });
+      setToken(token);
+      router.push("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   }
 
   return (
-    <main className="main">
-      <Header>Welcome to Counter</Header>
+    <>
+      {loading && <Loader />}
+      <main className="main">
+        <Header>Welcome to Counter</Header>
 
-      <form action={onSubmit}>
-        <Input id="login-email" name="login-email" label="E-mail" />
+        <form onSubmit={onSubmit}>
+          <Input id="login-email" name="login-email" label="E-mail" />
 
-        <Input
-          id="login-password"
-          name="login-password"
-          type="password"
-          label="Password"
-        />
+          <Input
+            id="login-password"
+            name="login-password"
+            type="password"
+            label="Password"
+          />
 
-        <p className="sign-up">Don&apos;t have an account? <Link href="/signup">Sign up</Link></p>
+          <p className="sign-up">
+            Don&apos;t have an account? <Link href="/signup">Sign up</Link>
+          </p>
 
-        <Button type="submit">Login</Button>
-      </form>
-    </main>
+          <Button type="submit">Login</Button>
+        </form>
+      </main>
+    </>
   );
 }

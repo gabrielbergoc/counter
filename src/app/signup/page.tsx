@@ -1,19 +1,27 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Button from "../components/button/button";
 import Header from "../components/header/header";
 import Input from "../components/input/input";
+import Loader from "../components/loader/loader";
 import { setToken } from "../lib/auth";
 import { loggedInGuard } from "../lib/guards";
 import { createUser } from "../lib/server/auth";
 import "./signup.scss";
 
 export default function Signup() {
-  loggedInGuard({ cookies });
+  loggedInGuard();
 
-  async function onSubmit(formData: FormData) {
-    "use server";
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // Previne o comportamento padrão do formulário
+    setLoading(true);
+
+    const formData = new FormData(event.currentTarget);
     const name = formData.get("signup-name")?.toString();
     const email = formData.get("signup-email")?.toString();
     const password = formData.get("signup-password")?.toString();
@@ -39,37 +47,43 @@ export default function Signup() {
       throw new Error("Passwords don't match");
     }
 
-    const token = await createUser({ name, email, password });
-    setToken(token, { cookies });
-
-    redirect("/");
+    try {
+      const token = await createUser({ name, email, password });
+      setToken(token);
+      router.push("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   }
 
   return (
-    <main className="main">
-      <Header>Sign up to Counter</Header>
+    <>
+      {loading && <Loader />}
+      <main className="main">
+        <Header>Sign up to Counter</Header>
 
-      <form action={onSubmit}>
-        <Input id="signup-name" name="signup-name" label="Name" />
+        <form onSubmit={onSubmit}>
+          <Input id="signup-name" name="signup-name" label="Name" />
 
-        <Input id="signup-email" name="signup-email" label="E-mail" />
+          <Input id="signup-email" name="signup-email" label="E-mail" />
 
-        <Input
-          id="signup-password"
-          name="signup-password"
-          type="password"
-          label="Password"
-        />
+          <Input
+            id="signup-password"
+            name="signup-password"
+            type="password"
+            label="Password"
+          />
 
-        <Input
-          id="confirm-password"
-          name="confirm-password"
-          type="password"
-          label="Confirm password"
-        />
+          <Input
+            id="confirm-password"
+            name="confirm-password"
+            type="password"
+            label="Confirm password"
+          />
 
-        <Button type="submit">Sign up</Button>
-      </form>
-    </main>
+          <Button type="submit">Sign up</Button>
+        </form>
+      </main>
+    </>
   );
 }
