@@ -65,7 +65,7 @@ export default function Signup() {
           id="confirm-password"
           name="confirm-password"
           type="password"
-          label="Password"
+          label="Confirm password"
         />
 
         <Button type="submit">Sign up</Button>
