@@ -1,10 +1,11 @@
 "use client";
 
-import plusIcon from "../../../../public/plus.svg";
-import minusIcon from "../../../../public/minus.svg";
+import useDebounce from "@/app/lib/effects/useDebounce";
 import { setUserCounter } from "@/app/lib/server/counter";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import minusIcon from "../../../../public/minus.svg";
+import plusIcon from "../../../../public/plus.svg";
 import Button from "../button/button";
 import Dialog from "../dialog/dialog";
 import Display from "../display/display";
@@ -15,9 +16,11 @@ export default function Counter({ initialValue }: { initialValue?: number }) {
   const [counter, setCounter] = useState(initialValue ?? 0);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
+  const counterDebounced = useDebounce(counter, 1000);
+
   useEffect(() => {
-    setUserCounter(counter);
-  }, [counter]);
+    setUserCounter(counterDebounced);
+  }, [counterDebounced]);
 
   function addToCounter(n: number) {
     return () => setCounter(counter + n);
