@@ -1,0 +1,8 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <line stroke="#000" stroke-width="12" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="269.5" x2="150" y1="30.5" x1="150" fill="none"/>
+  <line transform="rotate(90 150 150)" stroke="#000" stroke-width="12" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_3" y2="269.5" x2="150" y1="30.5" x1="150" fill="none"/>
+ </g>
+</svg>
