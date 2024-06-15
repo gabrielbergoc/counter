@@ -46,7 +46,7 @@ export default function Login() {
           label="Password"
         />
 
-        <p>Don&apos;t have an account? <Link href="/signup">Sign up</Link></p>
+        <p className="sign-up">Don&apos;t have an account? <Link href="/signup">Sign up</Link></p>
 
         <Button type="submit">Login</Button>
       </form>
