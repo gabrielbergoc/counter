@@ -68,7 +68,7 @@ export default function Signup() {
           label="Password"
         />
 
-        <Button type="submit">signup</Button>
+        <Button type="submit">Sign up</Button>
       </form>
     </main>
   );
