@@ -1,12 +1,16 @@
 $loader-thickness: 4px;
 
 .loader-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(127 127 127 / 0.5);
+
   .loader {
     border: $loader-thickness solid rgb(var(--loader-2nd-color));
     border-top: $loader-thickness solid rbg(var(--loader-1st-color));
@@ -15,13 +19,13 @@ $loader-thickness: 4px;
     height: 50px;
     animation: spin 2s linear infinite;
   }
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
+  100% {
+    transform: rotate(360deg);
+  }
+}
