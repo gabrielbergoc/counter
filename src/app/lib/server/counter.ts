@@ -1,15 +1,14 @@
 "use server";
 
-import { debounce } from "lodash";
-import { getToken } from "../auth";
 import { PrismaClient } from "@prisma/client";
 import { cookies } from "next/headers";
+import { getToken } from "../auth";
 import { authorize } from "./auth";
 
 
 const prisma = new PrismaClient();
 
-export const getUserCounter = debounce(async () => {
+export async function getUserCounter() {
   const token = getToken({ cookies });
   if (!token) {
     throw new Error("Unauthorized");
@@ -27,9 +26,9 @@ export const getUserCounter = debounce(async () => {
   });
 
   return counter;
-}, 1000, { leading: true });
+}
 
-export const setUserCounter = debounce(async (counter: number) => {
+export async function setUserCounter(counter: number) {
   const token = getToken({ cookies });
   if (!token) {
     throw new Error("Unauthorized");
@@ -42,4 +41,4 @@ export const setUserCounter = debounce(async (counter: number) => {
     where: { email },
     data: { counter },
   });
-}, 1000);
+}
