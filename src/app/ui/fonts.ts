@@ -1,3 +1,6 @@
-import { Inter } from "next/font/google";
+import { Kode_Mono } from "next/font/google";
 
-export const inter = Inter({ subsets: ["latin"] });
+export const kodeMono = Kode_Mono({ 
+    variable: '--font-kode-mono',
+    subsets: ["latin"],
+ });
